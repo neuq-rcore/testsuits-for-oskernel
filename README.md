@@ -50,15 +50,19 @@ LTP测试套件包含一系列用于测试Linux内核和相关功能的工具。
 ```shell
 
 cd linux-test-project
-# --prefix设置为你自己的构建路径
-./configure --prefix=/home/airxs/user/os/gitlab/github/linux-test-project/local/ltp \
+# --prefix设置为你自己的构建路径，即编译后的二进制文件安装的路径
+./configure --prefix=/root/ltp/output \
       AR=loongarch64-linux-gnu-ar RANLIB=loongarch64-linux-gnu-ranlib --host=loongarch64-linux-gnu \
-      --target=loongarch64-linux-gnu CFLAGS=-static LDFLAGS=-static
+      --target=loongarch64-linux-gnu 
+make -j16
+make install -j16
 
-cd testcases/kernel/syscalls
-make -j
 ```
-然后在syscalls/下，各个系统调用测试文件夹内生成可执行文件，然后复制到ramdisk中测试。
+在上文prefix指定的路径下，运行：
+```shell
+./runltp -f syscalls
+```
+即可运行所有syscall测试用例
 
 ## 使用已编译完成的二进制测试用例
 
@@ -67,4 +71,4 @@ make -j
 ## 使用loongarch Linux运行测试用例对比实现
 
 - 按照[此处](./loongarch-linux-qemu/README.md)下载并运行Linux镜像
-- /root/sdcard中为常规决赛测试用例，/root/ltp-syscalls中为LTP syscalls测试用例
+- /root/sdcard中为常规决赛测试用例，/root/ltp-syscalls中为LTP测试用例
