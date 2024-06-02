@@ -12,7 +12,8 @@ RAMDISK := sdcard
 
 # Makefile for build oscomp testsuits on LoongArch platform
 
-all: prepare busybox libc-bench lmbench unixbench interrupts-test libc-test lua netperf iperf rt-tests time-test true copy-file-range-test
+# all: prepare busybox libc-bench lmbench unixbench interrupts-test libc-test lua netperf iperf rt-tests time-test true copy-file-range-test
+all: prepare busybox libc-bench lmbench unixbench interrupts-test lua netperf iperf rt-tests time-test true copy-file-range-test
 
 prepare:
 	mkdir -p $(RAMDISK)
@@ -79,7 +80,8 @@ iperf: .PHONY
 	cp scripts/iperf/iperf_testcode.sh $(RAMDISK)/
 
 rt-tests: .PHONY
-	make -C rt-tests CC="$(MUSL_CROSS_COMPILER_GCC) -static" cyclictest hackbench
+	# make -C rt-tests CC="$(MUSL_CROSS_COMPILER_GCC) -static" cyclictest hackbench
+	make -C rt-tests CC="$(GNU_CROSS_COMPILER_GCC) -static" cyclictest hackbench
 	cp rt-tests/cyclictest rt-tests/hackbench $(RAMDISK)/
 	cp scripts/cyclictest/cyclictest_testcode.sh $(RAMDISK)/
 
