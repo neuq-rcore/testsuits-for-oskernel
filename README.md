@@ -60,3 +60,11 @@ make -j
 ```
 然后在syscalls/下，各个系统调用测试文件夹内生成可执行文件，然后复制到ramdisk中测试。
 
+## 使用已编译完成的二进制测试用例
+
+从release中下载对应的sdcard镜像，其中包含了所有已编译的测试用例
+
+## 使用loongarch Linux运行测试用例对比实现
+
+- 按照[此处](./loongarch-linux-qemu/README.md)下载并运行Linux镜像
+- /root/sdcard中为常规决赛测试用例，/root/ltp-syscalls中为LTP syscalls测试用例

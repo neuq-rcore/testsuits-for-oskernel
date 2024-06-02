@@ -13,7 +13,7 @@ RAMDISK := sdcard
 # Makefile for build oscomp testsuits on LoongArch platform
 
 # all: prepare busybox libc-bench lmbench unixbench interrupts-test libc-test lua netperf iperf rt-tests time-test true copy-file-range-test
-all: prepare busybox libc-bench lmbench unixbench interrupts-test lua netperf iperf rt-tests time-test true copy-file-range-test
+all: prepare busybox libc-bench lmbench unixbench interrupts-test lua netperf iperf time-test true copy-file-range-test
 
 prepare:
 	mkdir -p $(RAMDISK)
