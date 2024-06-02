@@ -4,6 +4,9 @@ MUSL_GCC = $(MUSL_PREFIX)-gcc
 MUSL_STRIP = $(MUSL_PREFIX)-strip
 
 build_all: busybox lua lmbench libctest iozone libc-bench netperf iperf unix-bench cyclictest time-test test_all true copy-file-range-test interrupts-test ltp
+	mkdir -p sdcard/lib/glibc
+	cp -d /usr/riscv64-linux-gnu/lib/*.so* sdcard/lib/glibc
+	chmod +x sdcard/*_testcode.sh
 
 busybox: .PHONY
 	cp busybox-config busybox/.config
@@ -28,7 +31,7 @@ lmbench: .PHONY
 
 libctest: .PHONY
 	make -C libc-test disk -j $(NPROC)
-	cp libc-test/disk/* sdcard/
+	cp -r libc-test/disk/* sdcard/
 	mv sdcard/run-all.sh sdcard/libctest_testcode.sh
 
 iozone: .PHONY
@@ -89,6 +92,7 @@ interrupts-test: .PHONY
 
 ltp: .PHONY
 	cd ltp-full-20240524 && ./configure --host=riscv64-linux-gnu --prefix /code/sdcard/ltp && make -j$(NPROC) && make install
+	cp scripts/ltp/ltp_testcode.sh sdcard/ltp_testcode.sh
 
 sdcard: build_all .PHONY
 	dd if=/dev/zero of=sdcard.img count=2048 bs=1M
@@ -116,6 +120,7 @@ clean: .PHONY
 	- make -C copy-file-range-test clean
 	- make -C interrupts-test clean
 	- make -C ltp-full-20240524 clean
+	- make -C true clean
 	- rm -rf sdcard/*
 	- rm -rf sdcard.img
 	- rm -rf sdcard.img.gz

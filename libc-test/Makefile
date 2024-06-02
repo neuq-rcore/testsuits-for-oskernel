@@ -88,8 +88,11 @@ disk: run-all.sh
 	cp entry-dynamic.exe disk
 	cp entry-static.exe disk
 	cp runtest.exe disk
-	cp src/functional/*.so src/regression/*.so disk
-	cp $(MUSL_LIB)/libc.so disk
+	mkdir -p disk/lib/musl
+	cp src/functional/*.so src/regression/*.so disk/lib
+	cp $(MUSL_LIB)/libc.so disk/lib/musl
+	rm -f disk/lib/ld-musl-riscv64-sf.so.1
+	ln -s musl/libc.so disk/lib/ld-musl-riscv64-sf.so.1
 	cp run-*.sh disk
 	# ls -lh disk/
 	# dd if=/dev/zero of=sdcard.img bs=1024K count=4
