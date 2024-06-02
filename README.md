@@ -29,7 +29,7 @@ time-test 为测试Kernel的time函数是否准确，其结果只作为专家评
 
 1. 在[https://people.debian.org/~gio/dqib/](https://people.debian.org/~gio/dqib/)点击[Images for riscv64-virt](https://gitlab.com/api/v4/projects/giomasce%2Fdqib/jobs/artifacts/master/download?job=convert_riscv64-virt)下载artifacts.zip。
 2. 解压。`unzip artifacts.zip`
-3. 安装`qemu-sysstem-riscv64`，`opensib`和`u-boot-qemu`。
+3. 安装`qemu-system-riscv64`，`opensbi`和`u-boot-qemu`。
 4. 参考`artifacts/readme.txt`里的指令启动debian。
 
 > 也可选择使用搭建好的镜像，下载地址：https://pan.baidu.com/s/1VetzxHOv1M4N0DdCpZCCMg 提取码：0uca
