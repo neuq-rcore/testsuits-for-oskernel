@@ -3,7 +3,7 @@ MUSL_PREFIX = riscv64-linux
 MUSL_GCC = $(MUSL_PREFIX)-gcc
 MUSL_STRIP = $(MUSL_PREFIX)-strip
 
-build_all: busybox lua lmbench libctest iozone libc-bench netperf iperf unix-bench cyclictest time-test test_all true copy-file-range-test interrupts-test
+build_all: busybox lua lmbench libctest iozone libc-bench netperf iperf unix-bench cyclictest time-test test_all true copy-file-range-test interrupts-test ltp
 
 busybox: .PHONY
 	cp busybox-config busybox/.config
@@ -87,17 +87,14 @@ interrupts-test: .PHONY
 	$(MUSL_STRIP) $@/$@-*
 	cp $@/$@-* sdcard/
 
+ltp: .PHONY
+	cd ltp-full-20240524 && ./configure --host=riscv64-linux-gnu --prefix /code/sdcard/ltp && make -j$(NPROC) && make install
+
 sdcard: build_all .PHONY
-	dd if=/dev/zero of=sdcard.img count=62768 bs=1K
-	mkfs.vfat -F 32 sdcard.img
+	dd if=/dev/zero of=sdcard.img count=2048 bs=1M
+	mkfs.ext4 sdcard.img
 	mkdir -p mnt
-	mount -t vfat -o user,umask=000,utf8=1 --source sdcard.img --target mnt
-	cp -r sdcard/* mnt
-	umount mnt
-	dd if=/dev/zero of=disk.img count=12K bs=1K
-	mkfs.vfat -F 32 disk.img
-	mkdir -p mnt
-	mount -t vfat -o user,umask=000,utf8=1 --source disk.img --target mnt
+	mount sdcard.img mnt
 	cp -r sdcard/* mnt
 	umount mnt
 
@@ -105,21 +102,22 @@ qemu: .PHONY
 	cd oscomp-debian && ./run.sh
 
 clean: .PHONY
-	make -C busybox clean
-	make -C lua clean
-	make -C lmbench clean
-	make -C libc-test clean
-	make -C iozone clean
-	make -C libc-bench clean
-	make -C netperf clean
-	make -C iperf clean
-	make -C UnixBench clean
-	make -C time-test clean
-	make -C rt-tests clean
-	make -C copy-file-range-test clean
-	make -C interrupts-test clean
-	- rm sdcard/*
-	- rm sdcard.img
-	- rm sdcard.img.gz
+	- make -C busybox clean
+	- make -C lua clean
+	- make -C lmbench clean
+	- make -C libc-test clean
+	- make -C iozone clean
+	- make -C libc-bench clean
+	- make -C netperf clean
+	- make -C iperf clean
+	- make -C UnixBench clean
+	- make -C time-test clean
+	- make -C rt-tests clean
+	- make -C copy-file-range-test clean
+	- make -C interrupts-test clean
+	- make -C ltp-full-20240524 clean
+	- rm -rf sdcard/*
+	- rm -rf sdcard.img
+	- rm -rf sdcard.img.gz
 
 .PHONY:

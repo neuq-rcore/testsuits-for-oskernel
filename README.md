@@ -1,4 +1,4 @@
-# Testsuits for OS Kernel 2023
+# Testsuits for OS Kernel 2024 riscv
 
 ### 测试用例
 
@@ -11,6 +11,7 @@
 - libc-test
 - netperf
 - time-test
+- ltp
 
 ### 注意
 
