@@ -39,7 +39,7 @@ time-test 为测试Kernel的time函数是否准确，其结果只作为专家评
 make all
 ```
 
-### Linux Test Protect 编译
+### Linux Test Project 编译
 LTP(Linux Test Project)是由SGI，OSDL和Bull发起的联合项目，由IBM，红帽，甲骨文等公司开发和维护。
 该项目的目标是向开源社区提供测试，以验证Linux的可靠性，健壮性和稳定性。
 
