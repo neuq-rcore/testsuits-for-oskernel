@@ -56,11 +56,28 @@ make -j16
 make install -j16
 
 ```
-在上文prefix指定的路径下，运行：
+在上文prefix指定的路径`$(PREFIX)`下，并将本仓库[`scripts/ltp/skip_tests`](scripts/ltp/skip_tests)文件拷贝至`$(PREFIX)`路径，运行：
 ```shell
-./runltp -f syscalls
+./runltp -f syscalls -S skip_tests
 ```
-即可运行所有syscall测试用例
+即可运行所有syscall测试用例，运行结果的日志为`$(PREFIX)/results/LTP_RUN_ON-2024xxxxx.log`，同学们可以忽略结果为CONF的测试用例。
+
+### 烧录ext4 sdcard测试用例镜像
+
+```shell
+# 创建一个空的镜像文件，大小为2G
+dd if=/dev/zero of=$PWD/sdcard.img bs=1M count=2048
+# 将该镜像文件格式化为ext4格式
+mkfs.ext4 sdcard.img
+# 新建一个空目录
+mkdir sdcard-testcases
+# 将镜像文件挂载至该目录
+sudo mount sdcard.img sdcard-testcases
+# 将常规测试用例和ltp测试用例拷贝至上述目录
+cp -r sdcard/ linux-test-project/output sdcard-testcases 
+sudo umount sdcard-testcases
+```
+sdcard.img文件便是包含了所有测试用例的镜像
 
 ## 使用已编译完成的二进制测试用例
 
