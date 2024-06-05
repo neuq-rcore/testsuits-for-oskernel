@@ -1,0 +1,26 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+# docker run --rm -it -v $(pwd):/code --privileged --entrypoint make alphamj/os-contest:v7.7 -C /code sdcard
+    - name: Run Docker command
+      uses: docker://alphamj/os-contest:v7.7
+      with:
+        entrypoint: make
+        args: -C /code sdcard
+        volumes: |
+          $(pwd):/code
+
+    - name: Upload sdcard.img to artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: sdcard-image
+        path: ./sdcard.img
